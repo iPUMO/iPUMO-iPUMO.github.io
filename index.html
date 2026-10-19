@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPUMO — Vibe Coder</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cyan: '#06b6d4',
+                            purple: '#8b5cf6',
+                            indigo: '#6366f1',
+                            dark: '#0b0f19',
+                            card: 'rgba(17, 24, 39, 0.7)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+        /* Glassmorphism styling */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+        }
+        /* Gradient text effect */
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Glow background elements */
+        .glow-bg {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-200 antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Glowing Background Spheres -->
+    <div class="glow-bg w-[500px] h-[500px] bg-cyan-500 top-[-100px] left-[-150px] animate-pulse-slow"></div>
+    <div class="glow-bg w-[600px] h-[600px] bg-indigo-600 top-[20%] right-[-200px] animate-pulse-slow"></div>
+    <div class="glow-bg w-[500px] h-[500px] bg-purple-600 top-[60%] left-[-200px]"></div>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-slate-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo -->
+                <a href="#hero" class="flex items-center space-x-2 group">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-200">
+                        iP
+                    </span>
+                    <span class="text-xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+                        iPUMO<span class="text-cyan-400">.dev</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#about" class="text-slate-300 hover:text-cyan-400 transition-colors">About</a>
+                    <a href="#projects" class="text-slate-300 hover:text-cyan-400 transition-colors">Projects</a>
+                    <a href="#services" class="text-slate-300 hover:text-cyan-400 transition-colors">Capabilities</a>
+                    <a href="#contact" class="text-slate-300 hover:text-cyan-400 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Actions & GitHub CTA -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="https://github.com/iPUMO" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 transition-all text-sm font-medium hover:shadow-lg hover:shadow-cyan-500/10">
+                        <i class="fab font-bold fa-github text-lg"></i>
+                        <span>GitHub Profile</span>
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" type="button" class="text-slate-300 hover:text-white p-2 rounded-md focus:outline-none" aria-label="Toggle Navigation">
+                        <i class="fas fa-bars text-xl" id="menuIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Nav -->
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-t border-slate-800 px-4 pt-2 pb-6 space-y-3">
+            <a href="#about" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800/60">About</a>
+            <a href="#projects" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800/60">Projects</a>
+            <a href="#services" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800/60">Capabilities</a>
+            <a href="#contact" class="mobile-link block px-3 py-2 rounded-md text-base font-medium text-slate-200 hover:bg-slate-800/60">Contact</a>
+            <a href="https://github.com/iPUMO" target="_blank" class="flex items-center justify-center space-x-2 w-full px-4 py-2 mt-4 rounded-lg bg-gradient-to-r from-cyan-500 to-indigo-600 text-white font-medium">
+                <i class="fab fa-github"></i>
+                <span>GitHub Profile</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 pt-20">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="min-h-[85vh] flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-12 lg:py-20">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
+                
+                <!-- Left Column Text -->
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full glass-panel border-cyan-500/40 text-cyan-400 text-sm font-semibold shadow-lg shadow-cyan-500/10">
+                        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping"></span>
+                        <span>✨ Vibe Coder & Learner</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                        Hi, I'm <span class="gradient-text">iPUMO</span> 👋<br>
+                        <span class="text-2xl sm:text-4xl text-slate-300 font-semibold mt-2 block">
+                            I am a <span id="typewriter" class="text-cyan-400 border-r-2 border-cyan-400 pr-1"></span>
+                        </span>
+                    </h1>
+
+                    <p class="text-slate-400 text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        A vibe coder who codes while learning, building cool things, experimenting with syntax, and crafting software on the fly.
+                    </p>
+
+                    <!-- CTA Action Buttons -->
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#projects" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02] transition-all duration-200 flex items-center space-x-2">
+                            <span>Explore Projects</span>
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="#contact" class="px-7 py-3.5 rounded-xl glass-panel text-slate-200 font-semibold hover:bg-slate-800/80 hover:text-white border-slate-700 hover:border-slate-500 transition-all duration-200 flex items-center space-x-2">
+                            <i class="far fa-envelope"></i>
+                            <span>Get In Touch</span>
+                        </a>
+                    </div>
+
+                    <!-- Social Media Quick Links -->
+                    <div class="pt-6 flex items-center justify-center lg:justify-start space-x-5 text-slate-400 text-xl">
+                        <a href="https://github.com/iPUMO" target="_blank" aria-label="GitHub Profile" class="hover:text-cyan-400 transition-colors hover:scale-110 transform"><i class="fab fa-github"></i></a>
+                        <a href="mailto:ipumodesu28@gmail.com" aria-label="Email iPUMO" class="hover:text-cyan-400 transition-colors hover:scale-110 transform"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Right Column Interactive Graphic/Card -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Decorative ambient card background -->
+                        <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-indigo-500/20 to-purple-500/20 rounded-3xl filter blur-2xl"></div>
+                        
+                        <!-- Terminal / Code Card -->
+                        <div class="relative glass-panel rounded-2xl p-6 border border-slate-700/60 shadow-2xl space-y-4">
+                            <!-- Window Controls -->
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                                <div class="flex space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                    <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                                    <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono">vibes.cpp</div>
+                            </div>
+
+                            <!-- Terminal Content -->
+                            <div class="font-mono text-sm space-y-3 leading-relaxed">
+                                <div>
+                                    <span class="text-purple-400">#include</span> <span class="text-emerald-300">&lt;iostream&gt;</span>
+                                </div>
+                                <div>
+                                    <span class="text-purple-400">int</span> <span class="text-yellow-300">main</span>() {
+                                </div>
+                                <div class="pl-4">
+                                    <span class="text-cyan-300">std::string</span> vibe = <span class="text-emerald-300">"Coding & Learning"</span>;
+                                </div>
+                                <div class="pl-4">
+                                    <span class="text-cyan-300">std::cout</span> &lt;&lt; <span class="text-emerald-300">"iPUMO is currently "</span> &lt;&lt; vibe &lt;&lt; <span class="text-cyan-300">std::endl</span>;
+                                </div>
+                                <div class="pl-4">
+                                    <span class="text-purple-400">return</span> <span class="text-amber-400">0</span>;
+                                </div>
+                                <div>}</div>
+                                <div class="pt-2 text-slate-500">
+                                    // Terminal Output<br>
+                                    <span class="text-emerald-400">✔</span> iPUMO is currently Coding & Learning<br>
+                                    <span class="text-cyan-400">⚡</span> Mode: Vibe Coding
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Stats Banner Bar -->
+            <div class="w-full mt-12 sm:mt-16 max-w-sm mx-auto">
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800/80 text-center shadow-xl">
+                    <div class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400">2</div>
+                    <div class="text-sm text-slate-300 font-semibold mt-1">Projects Completed</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT & TECH STACK SECTION -->
+        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-semibold text-cyan-400">About Me</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white">Coding on the Vibe & Learning along the Way</h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Bio text -->
+                <div class="lg:col-span-6 space-y-6 text-slate-300 leading-relaxed text-base">
+                    <p>
+                        I'm <strong class="text-white">iPUMO</strong>, a passionate <span class="text-cyan-400 font-medium">Vibe Coder</span> who enjoys learning by building projects hands-on.
+                    </p>
+                    <p>
+                        Rather than sticking to fixed formulas, I code while learning—experimenting with syntax, trying out new algorithms, and building software on the fly.
+                    </p>
+                    <p>
+                        My core focus is centered around foundational core languages: <span class="text-cyan-300 font-medium">Java</span>, <span class="text-cyan-300 font-medium">C++</span>, <span class="text-purple-300 font-medium">HTML</span>, and <span class="text-purple-300 font-medium">CSS</span>.
+                    </p>
+                </div>
+
+                <!-- Tech Stack Showcase -->
+                <div class="lg:col-span-6">
+                    <h4 class="text-xl font-bold text-white mb-6 flex items-center space-x-2">
+                        <i class="fas fa-code text-cyan-400"></i>
+                        <span>Tech Stack & Core Tools</span>
+                    </h4>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-2 gap-4" id="techStackGrid">
+                        <!-- Dynamic Skills Pill Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED PROJECTS SHOWCASE -->
+        <section id="projects" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-semibold text-cyan-400">Portfolio Showcase</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white">Completed Projects</h3>
+                <p class="text-slate-400 max-w-xl mx-auto">Check out the projects built while vibe coding and experimenting with code structures.</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Projects Grid (Showing 2 Projects) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" id="projectsContainer">
+                <!-- Projects injected by JavaScript -->
+            </div>
+        </section>
+
+        <!-- CAPABILITIES & LEARNING GOALS -->
+        <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-semibold text-cyan-400">Capabilities</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white">What I Focus On</h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Capability Card 1 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 glass-panel-hover transition-all duration-300 space-y-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-desktop"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">Web Design & Markup</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Crafting clean web layouts using HTML and CSS with custom styling, flexbox/grid structures, and responsive design patterns.
+                    </p>
+                </div>
+
+                <!-- Capability Card 2 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 glass-panel-hover transition-all duration-300 space-y-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        <i class="fas fa-terminal"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">C++ & Logic Building</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Building console tools, practicing algorithms, memory management basics, and strengthening foundational programming logic.
+                    </p>
+                </div>
+
+                <!-- Capability Card 3 -->
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 glass-panel-hover transition-all duration-300 space-y-4 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                        <i class="fab fa-java"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">Java Development</h4>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Writing object-oriented programs, exploring class hierarchies, data structures, and backend concepts with Java.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs uppercase tracking-widest font-semibold text-cyan-400">Get In Touch</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold text-white">Let's Connect</h3>
+                <p class="text-slate-400 max-w-md mx-auto">Want to collaborate, talk about code, or give feedback on my projects?</p>
+                <div class="w-16 h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <!-- Contact Info Details -->
+                <div class="lg:col-span-5 space-y-8 glass-panel p-8 rounded-2xl border border-slate-800">
+                    <h4 class="text-2xl font-bold text-white">Contact Information</h4>
+                    <p class="text-slate-400 leading-relaxed text-sm">
+                        Feel free to drop a message! I am always excited to learn, collaborate, and vibe on new coding experiments.
+                    </p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-xl border border-cyan-500/20">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-400 font-medium">Email Me</div>
+                                <a href="mailto:ipumodesu28@gmail.com" class="text-white hover:text-cyan-400 transition-colors font-medium">ipumodesu28@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl border border-indigo-500/20">
+                                <i class="fab fa-github"></i>
+                            </div>
+                            <div>
+                                <div class="text-xs text-slate-400 font-medium">GitHub Repository</div>
+                                <a href="https://github.com/iPUMO" target="_blank" class="text-white hover:text-indigo-400 transition-colors font-medium">github.com/iPUMO</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-800">
+                        <div class="text-xs text-slate-400 font-medium mb-3">Check my GitHub</div>
+                        <div class="flex space-x-3">
+                            <a href="https://github.com/iPUMO" target="_blank" class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-cyan-500 transition-all"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Contact Form -->
+                <div class="lg:col-span-7 glass-panel p-8 rounded-2xl border border-slate-800">
+                    <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
+                                <input type="text" id="name" required placeholder="Your name" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Your Email</label>
+                                <input type="email" id="email" required placeholder="your@email.com" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-slate-300 mb-2">Subject</label>
+                            <input type="text" id="subject" required placeholder="Feedback / Greeting / Collaboration" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all text-sm">
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-slate-300 mb-2">Message</label>
+                            <textarea id="message" rows="5" required placeholder="Type your message here..." class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all text-sm resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/25 hover:shadow-cyan-500/40 hover:scale-[1.01] transition-all duration-200 flex items-center justify-center space-x-2">
+                            <span id="btnText">Send Message</span>
+                            <i id="btnIcon" class="fas fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel border-t border-slate-800/80 py-8 mt-20 text-slate-400 text-sm text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                © 2026 <span class="text-white font-semibold">iPUMO</span>. Crafted while vibe coding & learning.
+            </div>
+            <div class="flex items-center space-x-6">
+                <a href="#hero" class="hover:text-cyan-400 transition-colors">Back to Top <i class="fas fa-arrow-up text-xs ml-1"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PROJECT DETAIL MODAL -->
+    <div id="projectModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity duration-300">
+        <div class="relative glass-panel rounded-2xl border border-slate-700 max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl">
+            <!-- Modal Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <!-- Modal Content -->
+            <div id="modalBody" class="space-y-6">
+                <!-- Dynamically filled by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden glass-panel border border-cyan-500/50 text-white px-5 py-3 rounded-xl shadow-xl flex items-center space-x-3">
+        <i class="fas fa-info-circle text-cyan-400"></i>
+        <span id="toastMsg" class="text-sm">Notification message</span>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Tech Stack Data (Java, C++, CSS, HTML)
+        const techStack = [
+            { name: 'Java', category: 'OOP & Logic', icon: 'fab fa-java', color: 'text-amber-500' },
+            { name: 'C++', category: 'System & Algorithms', icon: 'fas fa-code', color: 'text-purple-400' },
+            { name: 'CSS', category: 'Styling & Layouts', icon: 'fab fa-css3-alt', color: 'text-cyan-400' },
+            { name: 'HTML', category: 'Web Structure', icon: 'fab fa-html5', color: 'text-orange-500' }
+        ];
+
+        // Completed Projects Data (2 Projects)
+        const projectsData = [
+            {
+                id: 'delivery-service',
+                title: 'Delivery Service Web Design',
+                category: 'WEB DESIGN',
+                shortDesc: 'A web design project showcasing a clean layout, interactive UI, and structured HTML/CSS styling for a delivery logistics platform.',
+                fullDesc: 'Delivery Service Web Design is a front-end web project created to experiment with modern web design techniques. Built using HTML and CSS, it features responsive landing page components, delivery service highlight cards, clean typography, and styled call-to-action buttons.',
+                tags: ['HTML', 'CSS'],
+                icon: 'fas fa-truck-fast',
+                bgGradient: 'from-cyan-500/20 to-blue-600/20',
+                badgeColor: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
+                githubUrl: 'https://github.com/iPUMO/DeliveryServiceWebDesign',
+                liveUrl: 'https://github.com/iPUMO/DeliveryServiceWebDesign'
+            },
+            {
+                id: 'erecpass-projectnexus',
+                title: 'ERecPass - ProjectNexus',
+                category: 'SCHOOL PROJECT',
+                shortDesc: 'A comprehensive school project system developed under ProjectNexus (ERecPass) featuring student/record pass management, streamlined clearance workflows, user record tracking, and modular architecture.',
+                fullDesc: 'A comprehensive school project system developed under ProjectNexus (ERecPass) featuring student/record pass management, streamlined clearance workflows, user record tracking, and modular architecture built with Java, C++, CSS, and HTML.',
+                tags: ['Java', 'C++', 'CSS', 'HTML'],
+                icon: 'fas fa-id-card',
+                bgGradient: 'from-purple-500/20 to-indigo-600/20',
+                badgeColor: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
+                githubUrl: 'https://github.com/iPUMO/ERecPass-ProjectNexus-SchoolProject/blob/main/README.md',
+                liveUrl: 'https://github.com/iPUMO/ERecPass-ProjectNexus-SchoolProject/blob/main/README.md'
+            }
+        ];
+
+        // Typewriter Effect
+        const roles = ['Vibe Coder', 'Learner', 'Experimenter', 'Tech Enthusiast'];
+        let roleIdx = 0;
+        let charIdx = 0;
+        let isDeleting = false;
+
+        function typeWriter() {
+            const currentRole = roles[roleIdx];
+            const targetEl = document.getElementById('typewriter');
+
+            if (isDeleting) {
+                targetEl.textContent = currentRole.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                targetEl.textContent = currentRole.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIdx === currentRole.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIdx === 0) {
+                isDeleting = false;
+                roleIdx = (roleIdx + 1) % roles.length;
+                typeSpeed = 400;
+            }
+
+            setTimeout(typeWriter, typeSpeed);
+        }
+
+        // Render Tech Stack Pills
+        function renderTechStack() {
+            const container = document.getElementById('techStackGrid');
+            container.innerHTML = techStack.map(tech => `
+                <div class="glass-panel p-5 rounded-xl border border-slate-800 hover:border-slate-700 transition-all text-center group cursor-pointer">
+                    <div class="text-4xl mb-3 ${tech.color} group-hover:scale-110 transition-transform duration-200">
+                        <i class="${tech.icon}"></i>
+                    </div>
+                    <div class="text-base font-semibold text-white">${tech.name}</div>
+                    <div class="text-xs text-slate-400 mt-1">${tech.category}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render Projects
+        function renderProjects() {
+            const container = document.getElementById('projectsContainer');
+
+            container.innerHTML = projectsData.map(project => `
+                <div class="glass-panel rounded-2xl border border-slate-800/90 glass-panel-hover overflow-hidden transition-all duration-300 flex flex-col justify-between group">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr ${project.bgGradient} border border-slate-700/50 flex items-center justify-center text-cyan-400 text-xl group-hover:scale-105 transition-transform">
+                                <i class="${project.icon}"></i>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold border ${project.badgeColor}">
+                                ${project.category}
+                            </span>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">${project.title}</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">${project.shortDesc}</p>
+
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-1.5 pt-2">
+                            ${project.tags.map(tag => `
+                                <span class="px-2.5 py-1 rounded-md bg-slate-800/80 text-cyan-300 text-xs font-medium border border-slate-700/50">
+                                    ${tag}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Card Footer Actions -->
+                    <div class="p-6 pt-0 flex items-center justify-between border-t border-slate-800/60 mt-4 pt-4">
+                        <button onclick="openModal('${project.id}')" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1">
+                            <span>Project Details</span>
+                            <i class="fas fa-arrow-right text-[10px]"></i>
+                        </button>
+
+                        <div class="flex items-center space-x-2">
+                            <a href="${project.githubUrl}" target="_blank" class="p-2 rounded-lg bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors" title="View Repository">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal Functions
+        function openModal(projectId) {
+            const project = projectsData.find(p => p.id === projectId);
+            if (!project) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr ${project.bgGradient} border border-slate-700 flex items-center justify-center text-cyan-400 text-2xl">
+                        <i class="${project.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${project.badgeColor} mb-1 inline-block">
+                            ${project.category}
+                        </span>
+                        <h3 class="text-2xl font-bold text-white">${project.title}</h3>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h5 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Overview</h5>
+                    <p class="text-slate-300 text-sm leading-relaxed">${project.fullDesc}</p>
+                </div>
+
+                <div class="space-y-3">
+                    <h5 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Technologies</h5>
+                    <div class="flex flex-wrap gap-2">
+                        ${project.tags.map(tag => `
+                            <span class="px-3 py-1 rounded-lg bg-slate-800 text-cyan-300 text-xs font-medium border border-slate-700">
+                                ${tag}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-800 flex flex-wrap gap-4">
+                    <a href="${project.githubUrl}" target="_blank" class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white text-center font-semibold text-sm hover:opacity-90 transition-opacity flex items-center justify-center space-x-2">
+                        <i class="fab fa-github"></i>
+                        <span>View Repository on GitHub</span>
+                    </a>
+                </div>
+            `;
+
+            document.getElementById('projectModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on outer click
+        document.getElementById('projectModal').addEventListener('click', (e) => {
+            if (e.target.id === 'projectModal') closeModal();
+        });
+
+        // Contact Form Handler
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+
+            btnText.textContent = 'Sending...';
+            btnIcon.className = 'fas fa-spinner fa-spin text-xs';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btnText.textContent = 'Message Sent!';
+                btnIcon.className = 'fas fa-check text-xs';
+                btn.classList.remove('from-cyan-500', 'to-purple-600');
+                btn.classList.add('bg-emerald-600');
+
+                triggerToast('Message received! Thanks for reaching out.');
+
+                document.getElementById('contactForm').reset();
+
+                setTimeout(() => {
+                    btnText.textContent = 'Send Message';
+                    btnIcon.className = 'fas fa-paper-plane text-xs';
+                    btn.classList.remove('bg-emerald-600');
+                    btn.classList.add('from-cyan-500', 'to-purple-600');
+                    btn.disabled = false;
+                }, 3000);
+            }, 1000);
+        }
+
+        // Toast Helper
+        function triggerToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Initializer
+        window.onload = function () {
+            typeWriter();
+            renderTechStack();
+            renderProjects();
+        };
+    </script>
+</body>
+</html>
